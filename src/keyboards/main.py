@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from src.templates.keyboard_buttons.main import START_DEMOLITION, PROFILE, SUPPORT, START_DEMOLITION_CALLBACK, PROFILE_CALLBACK, SUPPORT_CALLBACK
+from src.templates.keyboard_buttons.main import START_DEMOLITION, PROFILE, SUPPORT, START_DEMOLITION_CALLBACK, PROFILE_CALLBACK, SUPPORT_URL
 from src.templates.keyboard_buttons.channel import MAIN_CHANNEL, MAIN_CHANNEL_URL, RULES_CHANNEL, RULES_CHANNEL_URL
 
 main_menu = InlineKeyboardMarkup(
@@ -18,7 +18,7 @@ main_menu = InlineKeyboardMarkup(
             ),
             InlineKeyboardButton(
                 text=SUPPORT,
-                callback_data=SUPPORT_CALLBACK,
+                url=SUPPORT_URL,
             ),
         ],
         [

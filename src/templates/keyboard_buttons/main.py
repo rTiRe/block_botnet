@@ -4,4 +4,4 @@ SUPPORT = 'Тех. Поддержка'
 
 START_DEMOLITION_CALLBACK = 'start_demolition'
 PROFILE_CALLBACK = 'profile'
-SUPPORT_CALLBACK = 'support'
+SUPPORT_URL = 'https://t.me/support_url'
