@@ -2,18 +2,19 @@ import time
 
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends
 from datetime import datetime
 
 from src.utils.user_utils import get_user
 from src.utils.admin_utils import check_admin
 from src.storage.database import get_db
 from src.models.user import User
+from src.utils.inject_database import Provide, inject
 
+@inject
 async def add_subscription(
     user_id: int,
     subscription_timestamp: int,
-    session: AsyncSession = Depends(get_db),
+    session: AsyncSession = Provide(get_db),
 ) -> None:
     statement = update(
         User,
@@ -26,7 +27,8 @@ async def add_subscription(
     await session.commit()
 
 
-async def remove_subscription(user_id: int, session: AsyncSession = Depends(get_db)) -> None:
+@inject
+async def remove_subscription(user_id: int, session: AsyncSession = Provide(get_db)) -> None:
     statement = update(
         User,
     ).where(

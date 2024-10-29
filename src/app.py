@@ -13,13 +13,15 @@ from starlette_context.middleware import RawContextMiddleware
 from config.settings import settings
 from src.bot import setup_dp, setup_bot
 from src.background_tasks import background_tasks
-from src.api import router
+from src.api import router as api_router
+from src.handlers import router as bot_router
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     dp = Dispatcher()
     setup_dp(dp)
+    dp.include_router(bot_router)
     default = DefaultBotProperties(parse_mode=ParseMode.HTML)
     bot = Bot(token=settings.BOT_TOKEN, default=default)
     setup_bot(bot)
@@ -32,7 +34,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
 
 def create_app() -> FastAPI:
     app = FastAPI(docs_url='/swagger', lifespan=lifespan)
-    app.include_router(router)
+    app.include_router(api_router)
     app.add_middleware(RawContextMiddleware, plugins=[plugins.CorrelationIdPlugin()])
     return app
 
@@ -40,6 +42,7 @@ def create_app() -> FastAPI:
 async def start_polling() -> None:
     dp = Dispatcher()
     setup_dp(dp)
+    dp.include_router(bot_router)
     default = DefaultBotProperties(parse_mode=ParseMode.HTML)
     bot = Bot(token=settings.BOT_TOKEN, default=default)
     setup_bot(bot)
