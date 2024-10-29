@@ -4,7 +4,7 @@ from src.templates.keyboard_buttons.main import START_DEMOLITION, PROFILE, SUPPO
 from src.templates.keyboard_buttons.channel import MAIN_CHANNEL, MAIN_CHANNEL_URL, RULES_CHANNEL, RULES_CHANNEL_URL
 
 main_menu = InlineKeyboardMarkup(
-    keyboard=[
+    inline_keyboard=[
         [
             InlineKeyboardButton(
                 text=START_DEMOLITION,

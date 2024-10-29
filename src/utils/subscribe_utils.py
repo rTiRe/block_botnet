@@ -41,7 +41,7 @@ async def remove_subscription(user_id: int, session: AsyncSession = Provide(get_
 
 
 async def check_subscription(user_id: int) -> str | bool:
-    if check_admin(user_id):
+    if await check_admin(user_id):
         return f'∞'
     user = await get_user(user_id)
     if not user or not user.subscription:

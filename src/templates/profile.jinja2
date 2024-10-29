@@ -1,0 +1,5 @@
+<b>Ваш профиль:</b>
+
+Имя: {{ user.first_name }}
+Данные: {{ user.id }} {% if user.username %} | @{{ user.username }} {% endif %}
+Подписка: {% if subscription %} {{ subscription }} {% else %} Нет {% endif %}
