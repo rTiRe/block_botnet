@@ -13,6 +13,7 @@ from starlette_context.middleware import RawContextMiddleware
 from config.settings import settings
 from src.bot import setup_dp, setup_bot
 from src.background_tasks import background_tasks
+from src.api import router
 
 
 @asynccontextmanager
@@ -31,6 +32,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
 
 def create_app() -> FastAPI:
     app = FastAPI(docs_url='/swagger', lifespan=lifespan)
+    app.include_router(router)
     app.add_middleware(RawContextMiddleware, plugins=[plugins.CorrelationIdPlugin()])
     return app
 
