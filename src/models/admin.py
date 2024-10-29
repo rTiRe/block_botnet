@@ -2,7 +2,7 @@ from sqlalchemy import Integer, UUID, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 import uuid
 
-from meta import Base
+from src.models.meta import Base
 
 class Admin(Base):
     __tablename__ = 'admins'
