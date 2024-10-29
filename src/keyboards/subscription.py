@@ -1,11 +1,11 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from src.templates.keyboard_buttons.subscription import ONE_WEEK, ONE_WEEK_CALLBACK
+from src.templates.keyboard_buttons.subscription import SUBSCRIPTIONS
 from src.templates.keyboard_buttons.return_back import RETURN_BACK, RETURN_BACK_CALLBACK
 
-subscription_select_keyboard = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [InlineKeyboardButton(text=RETURN_BACK, callback_data=RETURN_BACK_CALLBACK)],
-        [InlineKeyboardButton(text=ONE_WEEK, callback_data=ONE_WEEK_CALLBACK)],
-    ]
-)
+subscription_select_builder = InlineKeyboardBuilder()
+subscription_select_builder.button(text=RETURN_BACK, callback_data=RETURN_BACK_CALLBACK)
+for callback, button_data in SUBSCRIPTIONS.items():
+    subscription_select_builder.button(text=button_data['name'], callback_data=callback)
+subscription_select_builder.adjust(1, repeat=True)
+subscription_select_keyboard = subscription_select_builder.as_markup()

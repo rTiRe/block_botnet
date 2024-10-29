@@ -9,10 +9,12 @@ from src.templates.keyboard_buttons.main import PROFILE_CALLBACK
 from src.keyboards.profile import profile_keyboard
 from src.templates.env import render
 from src.states.profile import Profile
-from src.utils.subscribe_utils import check_subscription
+from src.states.subscription import Subscription
+from src.utils.subscribtion_utils import check_subscription
 
 
 @router.callback_query(default_state, F.data == PROFILE_CALLBACK)
+@router.callback_query(Subscription.selecting_subscription, F.data == RETURN_BACK_CALLBACK)
 async def profile(query: CallbackQuery, state: FSMContext) -> None:
     await query.answer()
     await state.set_state(Profile.showing_profile)
