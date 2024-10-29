@@ -1,0 +1,2 @@
+CANCEL_DEMOLITION = 'Отмена'
+CANCEL_DEMOLITION_CALLBACK = 'cancel_demolition'
