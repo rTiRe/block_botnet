@@ -17,7 +17,7 @@ async def pay_subscription(query: CallbackQuery, state: FSMContext) -> None:
     invoice_data['payload'] = query.from_user.id
     invoice = await get_crypto().create_invoice(**invoice_data)
     await state.set_state(Subscription.paying_subscription)
-    await query.message.answer(
+    await query.message.edit_text(
         text=render('pay.jinja2', invoice=invoice),
         reply_markup=await pay_keyboard(invoice),
     )
