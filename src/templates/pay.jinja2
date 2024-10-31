@@ -1,0 +1,4 @@
+<b>{{ invoice.description }}</b>
+<b>Цена:</b> <code>{{ invoice.amount }} {% if invoice.asset %}{{ invoice.asset }}{% else %}{{ invoice.fiat }}{% endif %}</code>
+
+<b>Оплатить:</b>

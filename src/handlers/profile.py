@@ -15,6 +15,7 @@ from src.utils.subscribtion_utils import check_subscription
 
 @router.callback_query(default_state, F.data == PROFILE_CALLBACK)
 @router.callback_query(Subscription.selecting_subscription, F.data == RETURN_BACK_CALLBACK)
+@router.callback_query(Subscription.paying_subscription, F.data == RETURN_BACK_CALLBACK)
 async def profile(query: CallbackQuery, state: FSMContext) -> None:
     await query.answer()
     await state.set_state(Profile.showing_profile)

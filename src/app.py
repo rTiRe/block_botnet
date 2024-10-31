@@ -7,6 +7,8 @@ from typing import AsyncGenerator
 from aiogram import Dispatcher, Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiocryptopay import AioCryptoPay, Networks
+from aiocryptopay.models.update import Update
 from starlette_context import plugins
 from starlette_context.middleware import RawContextMiddleware
 
@@ -15,6 +17,16 @@ from src.bot import setup_dp, setup_bot
 from src.background_tasks import background_tasks
 from src.api import router as api_router
 from src.handlers import router as bot_router
+from src.crypto import setup_crypto
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+
+async def invoice_paid(update: Update, app) -> None:
+    print(update)
+    pass
 
 
 @asynccontextmanager
@@ -25,11 +37,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     default = DefaultBotProperties(parse_mode=ParseMode.HTML)
     bot = Bot(token=settings.BOT_TOKEN, default=default)
     setup_bot(bot)
+    crypto = AioCryptoPay(token=settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET)
+    setup_crypto(crypto)
+    crypto.register_pay_handler(invoice_paid)
     await bot.set_webhook(settings.bot_webhook_url)
     yield
     while background_tasks:
         await asyncio.sleep(0)
     await bot.delete_webhook()
+    await crypto.close()
 
 
 def create_app() -> FastAPI:
@@ -46,6 +62,8 @@ async def start_polling() -> None:
     default = DefaultBotProperties(parse_mode=ParseMode.HTML)
     bot = Bot(token=settings.BOT_TOKEN, default=default)
     setup_bot(bot)
+    crypto = AioCryptoPay(token=settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET)
+    setup_crypto(crypto)
     await bot.delete_webhook()
     await dp.start_polling(bot)
 

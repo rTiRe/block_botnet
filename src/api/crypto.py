@@ -1,9 +1,9 @@
-from fastapi.responses import ORJSONResponse
+from fastapi.responses import Response
 from starlette.requests import Request
-from starlette.responses import JSONResponse
 
 from src.api.router import router
+from src.crypto import get_crypto
 
 @router.post('/crypto')
-async def crypto_webhook(request: Request) -> JSONResponse:
-    return ORJSONResponse({'message': 'Hello'})
+async def crypto_webhook(request: Request) -> Response:
+    await get_crypto().get_updates(request)
