@@ -1,11 +1,12 @@
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.storage.database import get_db
 from src.models.user import User
+from src.storage.database import get_db
+from src.utils.admin_utils import check_admin
 from src.utils.inject_database import Provide, inject
 from src.utils.user_utils import get_user
-from src.utils.admin_utils import check_admin
+
 
 async def get_user_invoice_id(user_id: int) -> int:
     if await check_admin(user_id):

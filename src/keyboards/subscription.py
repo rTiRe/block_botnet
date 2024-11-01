@@ -1,7 +1,8 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from src.templates.keyboard_buttons.return_back import (RETURN_BACK,
+                                                        RETURN_BACK_CALLBACK)
 from src.templates.keyboard_buttons.subscription import SUBSCRIPTIONS
-from src.templates.keyboard_buttons.return_back import RETURN_BACK, RETURN_BACK_CALLBACK
 
 subscription_select_builder = InlineKeyboardBuilder()
 subscription_select_builder.button(text=RETURN_BACK, callback_data=RETURN_BACK_CALLBACK)

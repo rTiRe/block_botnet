@@ -1,25 +1,24 @@
 import asyncio
-import uvicorn
-
+import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
 from typing import AsyncGenerator
-from aiogram import Dispatcher, Bot
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
+
+import uvicorn
 from aiocryptopay import AioCryptoPay, Networks
 from aiocryptopay.models.update import Update
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+from fastapi import FastAPI
 from starlette_context import plugins
 from starlette_context.middleware import RawContextMiddleware
 
 from config.settings import settings
-from src.bot import setup_dp, setup_bot
-from src.background_tasks import background_tasks
 from src.api import router as api_router
-from src.handlers import router as bot_router
+from src.background_tasks import background_tasks
+from src.bot import setup_bot, setup_dp
 from src.crypto import setup_crypto
-
-import logging
+from src.handlers import router as bot_router
 
 logging.basicConfig(level=logging.INFO)
 

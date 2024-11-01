@@ -1,10 +1,12 @@
-from aiogram.types import Message
-from aiogram.filters import CommandObject, Command
+from aiogram.filters import Command, CommandObject
 from aiogram.fsm.state import default_state
+from aiogram.types import Message
 
-from .router import router
 from src.utils.admin_utils import check_admin
 from src.utils.subscription_utils import remove_subscription as remove_sub
+
+from .router import router
+
 
 @router.message(default_state, Command('remove'))
 async def remove_subscription(message: Message, command: CommandObject) -> None:

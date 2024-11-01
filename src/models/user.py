@@ -1,8 +1,10 @@
-from sqlalchemy import Integer, UUID, BigInteger
-from sqlalchemy.orm import Mapped, mapped_column
 import uuid
 
+from sqlalchemy import UUID, BigInteger, Integer
+from sqlalchemy.orm import Mapped, mapped_column
+
 from src.models.meta import Base
+
 
 class User(Base):
     __tablename__ = 'users'

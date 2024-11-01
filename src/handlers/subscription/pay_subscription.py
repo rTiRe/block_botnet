@@ -1,14 +1,14 @@
 from aiogram import F
-from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery
 
-from src.handlers.subscription.router import router
-from src.templates.keyboard_buttons.subscription import SUBSCRIPTIONS
-from src.templates.env import render
-from src.states.subscription import Subscription
 from src.crypto import get_crypto
+from src.handlers.subscription.router import router
 from src.keyboards.pay import pay_keyboard
-from src.utils.crypto_utils import get_user_invoice_id, add_user_invoice_id
+from src.states.subscription import Subscription
+from src.templates.env import render
+from src.templates.keyboard_buttons.subscription import SUBSCRIPTIONS
+from src.utils.crypto_utils import add_user_invoice_id, get_user_invoice_id
 
 
 @router.callback_query(Subscription.selecting_subscription, F.data.in_(list(SUBSCRIPTIONS.keys())))

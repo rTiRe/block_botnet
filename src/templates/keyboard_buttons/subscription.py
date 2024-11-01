@@ -1,4 +1,4 @@
-from aiocryptopay.const import CurrencyType, Assets
+from aiocryptopay.const import Assets, CurrencyType
 
 currency_type = CurrencyType.CRYPTO
 asset = Assets.USDT

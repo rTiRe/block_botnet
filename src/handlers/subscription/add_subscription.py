@@ -1,11 +1,14 @@
-from aiogram.types import Message
-from aiogram.filters import CommandObject, Command
-from aiogram.fsm.state import default_state
 import time
 
-from .router import router
+from aiogram.filters import Command, CommandObject
+from aiogram.fsm.state import default_state
+from aiogram.types import Message
+
 from src.utils.admin_utils import check_admin
 from src.utils.subscription_utils import add_subscription as add_sub
+
+from .router import router
+
 
 @router.message(default_state, Command('add'))
 async def add_subscription(message: Message, command: CommandObject) -> None:

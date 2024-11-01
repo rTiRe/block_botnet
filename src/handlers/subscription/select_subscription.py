@@ -1,14 +1,15 @@
 from aiogram import F
-from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery
 
 from src.handlers.subscription.router import router
-from src.templates.keyboard_buttons.profile import BUY_SUBSCRIPTION_CALLBACK
-from src.templates.env import render
 from src.keyboards.subscription import subscription_select_keyboard
 from src.states.profile import Profile
 from src.states.subscription import Subscription
+from src.templates.env import render
+from src.templates.keyboard_buttons.profile import BUY_SUBSCRIPTION_CALLBACK
 from src.utils.subscription_utils import check_subscription
+
 
 @router.callback_query(Profile.showing_profile, F.data == BUY_SUBSCRIPTION_CALLBACK)
 async def select_subscription(query: CallbackQuery, state: FSMContext) -> None:

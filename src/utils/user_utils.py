@@ -2,9 +2,10 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.storage.database import get_db
 from src.models.user import User
+from src.storage.database import get_db
 from src.utils.inject_database import Provide, inject
+
 
 @inject
 async def get_user(user_id: int, session: AsyncSession = Provide(get_db)) -> User:
