@@ -58,7 +58,8 @@ per-file-ignores =
     src/models/__init__.py,
     src/handlers/subscription/__init__.py,
     src/handlers/__init__.py,
-    src/api/__init__.py:
+    src/api/__init__.py,
+    src/middlewares/__init__.py:
         F401,
         F811,
         WPS300,

@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from starlette_context import middleware, plugins
 
 from config.settings import settings
-from src import api, background_tasks, bot, crypto, handlers
+from src import api, background_tasks, bot, crypto, handlers, middlewares
 
 
 async def invoice_paid(update: Update, app) -> None: ...
@@ -21,6 +21,8 @@ async def setup_app() -> tuple[Dispatcher, Bot, AioCryptoPay]:
     dp = Dispatcher()
     bot.setup_dp(dp)
     dp.include_router(handlers.router)
+    dp.message.outer_middleware(middlewares.CheckSubscriptionMiddleware())
+    dp.callback_query.outer_middleware(middlewares.CheckSubscriptionMiddleware())
     default = DefaultBotProperties(parse_mode=enums.ParseMode.HTML)
     tg_bot = Bot(token=settings.BOT_TOKEN, default=default)
     bot.setup_bot(tg_bot)
