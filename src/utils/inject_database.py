@@ -15,4 +15,5 @@ def inject(f):
                 async for db in param.default.value():
                     kwargs[param.name] = db
                     return await f(*args, **kwargs)
+
     return wrapper

@@ -17,12 +17,16 @@ async def add_subscription(
     subscription_timestamp: int | None,
     session: AsyncSession = Provide(get_db),
 ) -> None:
-    statement = update(
-        User,
-    ).where(
-        User.user_id == user_id,
-    ).values(
-        subscription=subscription_timestamp,
+    statement = (
+        update(
+            User,
+        )
+        .where(
+            User.user_id == user_id,
+        )
+        .values(
+            subscription=subscription_timestamp,
+        )
     )
     await session.execute(statement)
     await session.commit()

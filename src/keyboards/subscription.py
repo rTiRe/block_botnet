@@ -1,7 +1,6 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from src.templates.keyboard_buttons.return_back import (RETURN_BACK,
-                                                        RETURN_BACK_CALLBACK)
+from src.templates.keyboard_buttons.return_back import RETURN_BACK, RETURN_BACK_CALLBACK
 from src.templates.keyboard_buttons.subscription import SUBSCRIPTIONS
 
 subscription_select_builder = InlineKeyboardBuilder()

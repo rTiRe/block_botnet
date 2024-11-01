@@ -9,8 +9,7 @@ from src.states.demolition import Demolition
 from src.states.profile import Profile
 from src.templates.env import render
 from src.templates.keyboard_buttons.call import CALL_MAIN_MENU
-from src.templates.keyboard_buttons.demolition import \
-    CANCEL_DEMOLITION_CALLBACK
+from src.templates.keyboard_buttons.demolition import CANCEL_DEMOLITION_CALLBACK
 from src.templates.keyboard_buttons.return_back import RETURN_BACK_CALLBACK
 
 

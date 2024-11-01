@@ -2,8 +2,7 @@ from uuid import uuid4
 
 from asyncpg import Connection
 from sqlalchemy import AsyncAdaptedQueuePool
-from sqlalchemy.ext.asyncio import (AsyncEngine, AsyncSession,
-                                    async_sessionmaker, create_async_engine)
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 from typing_extensions import AsyncGenerator
 
 from config.settings import settings

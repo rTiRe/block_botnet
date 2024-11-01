@@ -21,12 +21,16 @@ async def add_user_invoice_id(
     invoice_id: int | None,
     session: AsyncSession = Provide(get_db),
 ) -> None:
-    statement = update(
-        User,
-    ).where(
-        User.user_id == user_id,
-    ).values(
-        waiting_invoice=invoice_id,
+    statement = (
+        update(
+            User,
+        )
+        .where(
+            User.user_id == user_id,
+        )
+        .values(
+            waiting_invoice=invoice_id,
+        )
     )
     await session.execute(statement)
     await session.commit()

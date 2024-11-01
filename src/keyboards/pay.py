@@ -2,8 +2,7 @@ from aiocryptopay.api import Invoice
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from src.templates.keyboard_buttons.return_back import (RETURN_BACK,
-                                                        RETURN_BACK_CALLBACK)
+from src.templates.keyboard_buttons.return_back import RETURN_BACK, RETURN_BACK_CALLBACK
 
 
 async def pay_keyboard(invoice: Invoice) -> InlineKeyboardMarkup:
