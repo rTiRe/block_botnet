@@ -4,10 +4,9 @@ from aiogram.filters import Command, CommandObject
 from aiogram.fsm.state import default_state
 from aiogram.types import Message
 
+from src.handlers.subscription.router import router
 from src.utils.admin_utils import check_admin
 from src.utils.subscription_utils import add_subscription as add_sub
-
-from .router import router
 
 
 @router.message(default_state, Command('add'))
@@ -18,15 +17,19 @@ async def add_subscription(message: Message, command: CommandObject) -> None:
     if len(command.args) < 2:
         await message.answer('Неправильный формат команды. Используйте: /add [target_user_id] [days]')
         return
+    command_args = command.args.split(' ')
     try:
-        target_user_id, days = map(int, command.args.split(' ')[:2])
+        target_user_id, days = map(int, command_args[:2])
     except ValueError:
-        await message.answer('ID и количество дней должны быть числами. Используйте: /add [target_user_id] [days]')
+        await message.answer(
+            'ID и количество дней должны быть числами. Используйте: /add [target_user_id] [days]',
+        )
         return
-    subscription_timestamp = int(time.time() * 1000) + days * 24 * 60 * 60 * 1000
+    days_milliseconds = days * 24 * 60 * 60 * 1000
+    subscription_timestamp = int(time.time() * 1000) + days_milliseconds
     try:
         await add_sub(target_user_id, subscription_timestamp)
-    except Exception as e:
-        await message.answer(f'Произошла ошибка! Возможно, указанного пользователя не существует. {e}')
+    except Exception:  # noqa: PIE786 - Because the user should not know the reason for the error.
+        await message.answer('Произошла ошибка! Возможно, указанного пользователя не существует.')
     else:
         await message.answer(f'Подписка на {days} дней успешно выдана пользователю {target_user_id}!')

@@ -1,19 +1,20 @@
 import inspect
+from typing import Callable
 
 
 class Provide:
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, function: Callable):
+        self.function = function
 
 
-def inject(f):
-    sig = inspect.signature(f)
+def inject(function: Callable):
+    signature = inspect.signature(function)
 
     async def wrapper(*args, **kwargs):
-        for param in sig.parameters.values():
-            if isinstance(param.default, Provide):
-                async for db in param.default.value():
-                    kwargs[param.name] = db
-                    return await f(*args, **kwargs)
+        for parameter in signature.parameters.values():
+            if isinstance(parameter.default, Provide):
+                async for db in parameter.default.function():
+                    kwargs[parameter.name] = db
+                    return await function(*args, **kwargs)
 
     return wrapper

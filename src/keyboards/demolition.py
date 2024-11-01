@@ -5,5 +5,5 @@ from src.templates.keyboard_buttons.demolition import CANCEL_DEMOLITION, CANCEL_
 cancel_demolition = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text=CANCEL_DEMOLITION, callback_data=CANCEL_DEMOLITION_CALLBACK)],
-    ]
+    ],
 )

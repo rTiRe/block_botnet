@@ -10,10 +10,8 @@ from src.utils.inject_database import Provide, inject
 @inject
 async def check_admin(user_id: int, session: AsyncSession = Provide(get_db)) -> bool:
     statement = select(Admin).where(Admin.user_id == user_id)
-    result = await session.execute(statement)
-    if result.fetchone():
-        return True
-    return False
+    raw_admin = await session.execute(statement)
+    return bool(raw_admin.fetchone())
 
 
 @inject

@@ -9,6 +9,7 @@ async def pay_keyboard(invoice: Invoice) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text=RETURN_BACK, callback_data=RETURN_BACK_CALLBACK)
     currency = invoice.asset or invoice.fiat
-    builder.button(text=f'{invoice.amount} {currency}', url=invoice.bot_invoice_url)
+    pay_text = f'{invoice.amount} {currency}'
+    builder.button(text=pay_text, url=invoice.bot_invoice_url)
     builder.adjust(1, repeat=True)
     return builder.as_markup()

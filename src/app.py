@@ -1,74 +1,67 @@
 import asyncio
-import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 import uvicorn
 from aiocryptopay import AioCryptoPay, Networks
 from aiocryptopay.models.update import Update
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, enums
 from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
 from fastapi import FastAPI
-from starlette_context import plugins
-from starlette_context.middleware import RawContextMiddleware
+from starlette_context import middleware, plugins
 
 from config.settings import settings
-from src.api import router as api_router
-from src.background_tasks import background_tasks
-from src.bot import setup_bot, setup_dp
-from src.crypto import setup_crypto
-from src.handlers import router as bot_router
-
-logging.basicConfig(level=logging.INFO)
+from src import api, background_tasks, bot, crypto, handlers
 
 
-async def invoice_paid(update: Update, app) -> None:
-    print(update)
-    pass
+async def invoice_paid(update: Update, app) -> None: ...
+
+
+async def setup_app() -> tuple[Dispatcher, Bot, AioCryptoPay]:
+    dp = Dispatcher()
+    bot.setup_dp(dp)
+    dp.include_router(handlers.router)
+    default = DefaultBotProperties(parse_mode=enums.ParseMode.HTML)
+    tg_bot = Bot(token=settings.BOT_TOKEN, default=default)
+    bot.setup_bot(tg_bot)
+    tg_crypto = AioCryptoPay(token=settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET)
+    crypto.setup_crypto(tg_crypto)
+    return dp, tg_bot, tg_crypto
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    dp = Dispatcher()
-    setup_dp(dp)
-    dp.include_router(bot_router)
-    default = DefaultBotProperties(parse_mode=ParseMode.HTML)
-    bot = Bot(token=settings.BOT_TOKEN, default=default)
-    setup_bot(bot)
-    crypto = AioCryptoPay(token=settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET)
-    setup_crypto(crypto)
-    crypto.register_pay_handler(invoice_paid)
-    await bot.set_webhook(settings.bot_webhook_url)
+    _dp, tg_bot, tg_crypto = await setup_app()
+    tg_crypto.register_pay_handler(invoice_paid)
+    await tg_bot.set_webhook(settings.bot_webhook_url)
     yield
     while background_tasks:
         await asyncio.sleep(0)
-    await bot.delete_webhook()
-    await crypto.close()
+    await tg_bot.delete_webhook()
+    await tg_crypto.close()
 
 
 def create_app() -> FastAPI:
     app = FastAPI(docs_url='/swagger', lifespan=lifespan)
-    app.include_router(api_router)
-    app.add_middleware(RawContextMiddleware, plugins=[plugins.CorrelationIdPlugin()])
+    app.include_router(api.router)
+    app.add_middleware(middleware.RawContextMiddleware, plugins=[plugins.CorrelationIdPlugin()])
     return app
 
 
 async def start_polling() -> None:
-    dp = Dispatcher()
-    setup_dp(dp)
-    dp.include_router(bot_router)
-    default = DefaultBotProperties(parse_mode=ParseMode.HTML)
-    bot = Bot(token=settings.BOT_TOKEN, default=default)
-    setup_bot(bot)
-    crypto = AioCryptoPay(token=settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET)
-    setup_crypto(crypto)
-    await bot.delete_webhook()
-    await dp.start_polling(bot)
+    dp, tg_bot, _tg_crypto = await setup_app()
+    await tg_bot.delete_webhook()
+    await dp.start_polling(tg_bot)
 
 
 if __name__ == '__main__':
-    if settings.WEBHOOK_URL:
-        uvicorn.run('src.app:create_app', factory=True, host='0.0.0.0', port=8000, workers=1)
+    if settings.FASTAPI_HOST:
+        uvicorn.run(
+            'src.app:create_app',
+            factory=True,
+            host=settings.FASTAPI_HOST,
+            port=settings.FASTAPI_PORT,
+            workers=1,
+        )
     else:
         asyncio.run(start_polling())

@@ -10,17 +10,15 @@ from src.utils.inject_database import Provide, inject
 @inject
 async def get_user(user_id: int, session: AsyncSession = Provide(get_db)) -> User:
     statement = select(User).where(User.user_id == user_id)
-    result = await session.execute(statement)
-    user = result.fetchone()[0]
-    return user
+    raw_user = await session.execute(statement)
+    return raw_user.fetchone()[0]
 
 
 @inject
 async def get_users(session: AsyncSession = Provide(get_db)) -> tuple[User]:
     statement = select(User.user_id)
-    result = await session.execute(statement)
-    users = [id[0] for id in result.fetchall()]
-    return users
+    raw_users = await session.execute(statement)
+    return [user_id[0] for user_id in raw_users.fetchall()]
 
 
 @inject

@@ -1,5 +1,7 @@
 [flake8]
 max-line-length = 100
+max-local-variables=8
+max-awaits=8
 no-accept-encodings = True
 exclude =
     .git,
@@ -20,9 +22,53 @@ exclude =
 # W505: Maximum doc-string length. Because it's not black compatible
 # B008: Do not perform function calls in argument defaults. Because FastAPI
 # G200: Logging exception. Because sometime its needed
-# PIE781: PIE781: assign-and-return. Because it's too noisy
-ignore = E203,E501,W503,W505,B008,G200,PIE781,EXE002
+# PIE781: assign-and-return. Because it's too noisy
+# WPS404: complex default value. Because Provide and Depends
+# WPS305: f strings. Becaouse it's ok
+# WPS348: line that starts with a dot. Becaouse black
+# WPS323: % string formatting. Because it's ok for db meta
+# WPS300: local folder import. Because its ok for __init__
+# WPS412: __init__ with logic. Because I import classes
+# WPS440: block variables overlap. Because it's ok for __init__
+# WPS347: vague import that may cause confusion. Because AIOgram F
+# E704: multiple statements on one line (def). Because black
+ignore = 
+    E203,
+    E501,
+    W503,
+    W505,
+    B008,
+    G200,
+    PIE781,
+    EXE002,
+    WPS404,
+    WPS305,
+    WPS348,
+    WPS347,
+    E704
 select = C,E,F,G,I,P,S,W,Q,T,B,B950
-per-file-ignores = __init__.py:F401
+per-file-ignores =
+    __init__.py:
+        F401,
+        F811,
+        WPS300,
+        WPS440
+    src/models/meta.py:
+        WPS323
+    src/models/__init__.py,
+    src/handlers/subscription/__init__.py,
+    src/handlers/__init__.py,
+    src/api/__init__.py:
+        F401,
+        F811,
+        WPS300,
+        WPS440,
+        WPS412
+    src/crypto.py,
+    src/bot.py:
+        WPS420,
+        WPS442
+    config/settings.py:
+        WPS115
 
 [isort]

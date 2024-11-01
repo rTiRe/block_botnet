@@ -3,9 +3,9 @@ from aiocryptopay import AioCryptoPay
 crypto: AioCryptoPay
 
 
-def setup_crypto(crypto_: AioCryptoPay) -> None:
+def setup_crypto(_crypto: AioCryptoPay) -> None:
     global crypto
-    crypto = crypto_
+    crypto = _crypto
 
 
 def get_crypto() -> AioCryptoPay:

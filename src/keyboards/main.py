@@ -1,6 +1,11 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from src.templates.keyboard_buttons.channel import MAIN_CHANNEL, MAIN_CHANNEL_URL, RULES_CHANNEL, RULES_CHANNEL_URL
+from src.templates.keyboard_buttons.channel import (
+    MAIN_CHANNEL,
+    MAIN_CHANNEL_URL,
+    RULES_CHANNEL,
+    RULES_CHANNEL_URL,
+)
 from src.templates.keyboard_buttons.main import (
     PROFILE,
     PROFILE_CALLBACK,

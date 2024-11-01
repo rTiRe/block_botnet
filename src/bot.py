@@ -4,9 +4,9 @@ bot: Bot
 dp: Dispatcher
 
 
-def setup_bot(bot_: Bot) -> None:
+def setup_bot(_bot: Bot) -> None:
     global bot
-    bot = bot_
+    bot = _bot
 
 
 def get_bot() -> Bot:
@@ -14,9 +14,9 @@ def get_bot() -> Bot:
     return bot
 
 
-def setup_dp(dp_: Dispatcher) -> None:
+def setup_dp(_dp: Dispatcher) -> None:
     global dp
-    dp = dp_
+    dp = _dp
 
 
 def get_dp() -> Dispatcher:

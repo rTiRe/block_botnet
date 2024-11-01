@@ -1,3 +1,5 @@
+from types import MappingProxyType
+
 from aiocryptopay.const import Assets, CurrencyType
 
 currency_type = CurrencyType.CRYPTO
@@ -10,32 +12,34 @@ invoice_const_data = {
     'paid_btn_name': 'openBot',
 }
 
-SUBSCRIPTIONS = {
-    'one_week': {
-        'name': '1 неделя',
-        'duration': 7,
-        'invoice': {
-            'amount': 2,
-            'description': 'Оплата подписки на 1 неделю',
-            **invoice_const_data,
+SUBSCRIPTIONS = MappingProxyType(
+    {
+        'one_week': {
+            'name': '1 неделя',
+            'duration': 7,
+            'invoice': {
+                'amount': 2,
+                'description': 'Оплата подписки на 1 неделю',
+                **invoice_const_data,
+            },
+        },
+        'two_weeks': {
+            'name': '2 недели',
+            'duration': 14,
+            'invoice': {
+                'amount': 5,
+                'description': 'Оплата подписки на 2 недели',
+                **invoice_const_data,
+            },
+        },
+        'one_month': {
+            'name': '1 месяц',
+            'duration': 30,
+            'invoice': {
+                'amount': 10,
+                'description': 'Оплата подписки на 1 месяц',
+                **invoice_const_data,
+            },
         },
     },
-    'two_weeks': {
-        'name': '2 недели',
-        'duration': 14,
-        'invoice': {
-            'amount': 5,
-            'description': 'Оплата подписки на 2 недели',
-            **invoice_const_data,
-        },
-    },
-    'one_month': {
-        'name': '1 месяц',
-        'duration': 30,
-        'invoice': {
-            'amount': 10,
-            'description': 'Оплата подписки на 1 месяц',
-            **invoice_const_data,
-        },
-    },
-}
+)

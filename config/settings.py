@@ -16,7 +16,8 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
 
-    WEBHOOK_URL: Optional[str]
+    FASTAPI_HOST: Optional[str]
+    FASTAPI_PORT: Optional[int]
 
     @property
     def db_url(self) -> str:
@@ -27,11 +28,11 @@ class Settings(BaseSettings):
 
     @property
     def bot_webhook_url(self) -> str:
-        return f'{self.WEBHOOK_URL}/{self.BOT_WEBHOOK_PATH}'
+        return f'{self.FASTAPI_HOST}/{self.BOT_WEBHOOK_PATH}'
 
     @property
     def crypro_webhook_url(self) -> str:
-        return f'{self.WEBHOOK_URL}/{self.CRYPTO_WEBHOOK_PATH}'
+        return f'{self.FASTAPI_HOST}/{self.CRYPTO_WEBHOOK_PATH}'
 
     class Config:
         env_file = 'config/.env'
