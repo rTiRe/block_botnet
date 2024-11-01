@@ -8,7 +8,6 @@ from src.utils.inject_database import Provide, inject
 
 @inject
 async def get_user(user_id: int, session: AsyncSession = Provide(get_db)) -> User:
-    user = None
     statement = select(User).where(User.user_id == user_id)
     result = await session.execute(statement)
     user = result.fetchone()[0]

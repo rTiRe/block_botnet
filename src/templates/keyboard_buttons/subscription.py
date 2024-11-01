@@ -1,8 +1,7 @@
-from aiocryptopay.const import Assets
-from aiocryptopay.const import CurrencyType
+from aiocryptopay.const import CurrencyType, Assets
 
 currency_type = CurrencyType.CRYPTO
-asset = Assets.TON
+asset = Assets.USDT
 
 invoice_const_data = {
     'currency_type': str(currency_type),

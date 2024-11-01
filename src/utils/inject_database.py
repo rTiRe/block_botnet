@@ -13,5 +13,5 @@ def inject(f):
             if isinstance(param.default, Provide):
                 async for db in param.default.value():
                     kwargs[param.name] = db
-                    await f(*args, **kwargs)
+                    return await f(*args, **kwargs)
     return wrapper

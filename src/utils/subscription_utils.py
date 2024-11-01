@@ -13,7 +13,7 @@ from src.utils.inject_database import Provide, inject
 @inject
 async def add_subscription(
     user_id: int,
-    subscription_timestamp: int,
+    subscription_timestamp: int | None,
     session: AsyncSession = Provide(get_db),
 ) -> None:
     statement = update(
@@ -27,17 +27,8 @@ async def add_subscription(
     await session.commit()
 
 
-@inject
-async def remove_subscription(user_id: int, session: AsyncSession = Provide(get_db)) -> None:
-    statement = update(
-        User,
-    ).where(
-        User.user_id == user_id,
-    ).values(
-        subscription=None,
-    )
-    await session.execute(statement)
-    await session.commit()
+async def remove_subscription(user_id: int) -> None:
+    await add_subscription(user_id, None)
 
 
 async def check_subscription(user_id: int) -> str | bool:

@@ -8,7 +8,7 @@ from src.templates.env import render
 from src.keyboards.subscription import subscription_select_keyboard
 from src.states.profile import Profile
 from src.states.subscription import Subscription
-from src.utils.subscribtion_utils import check_subscription
+from src.utils.subscription_utils import check_subscription
 
 @router.callback_query(Profile.showing_profile, F.data == BUY_SUBSCRIPTION_CALLBACK)
 async def select_subscription(query: CallbackQuery, state: FSMContext) -> None:
