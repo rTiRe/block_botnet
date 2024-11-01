@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import UUID, BigInteger, Integer
+from sqlalchemy import UUID, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.models.meta import Base

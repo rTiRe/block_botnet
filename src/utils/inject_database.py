@@ -8,6 +8,7 @@ class Provide:
 
 def inject(f):
     sig = inspect.signature(f)
+
     async def wrapper(*args, **kwargs):
         for param in sig.parameters.values():
             if isinstance(param.default, Provide):

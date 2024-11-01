@@ -28,4 +28,3 @@ async def add_user(user_id: int, session: AsyncSession = Provide(get_db)) -> Non
     statement = insert(User).values(user_id=user_id).on_conflict_do_nothing()
     await session.execute(statement)
     await session.commit()
-

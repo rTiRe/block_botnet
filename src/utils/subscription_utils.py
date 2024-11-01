@@ -34,12 +34,12 @@ async def remove_subscription(user_id: int) -> None:
 
 async def check_subscription(user_id: int) -> str | bool:
     if await check_admin(user_id):
-        return f'∞'
+        return '∞'
     user = await get_user(user_id)
     if not user or not user.subscription:
         return False
     if user.subscription == -1:
-        return f'∞'
+        return '∞'
     now = datetime.fromtimestamp(time.time())
     subscription_end = datetime.fromtimestamp(user.subscription / 1000)
     delta = subscription_end - now
