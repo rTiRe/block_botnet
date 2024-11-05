@@ -2,6 +2,7 @@ from aiogram import F
 from aiogram.enums import ChatType
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
+from aiogram.exceptions import TelegramBadRequest
 
 from src.handlers.demolition.router import router
 from src.handlers.demolition.run_demolition import demolition
@@ -66,7 +67,17 @@ async def wait_message_link(message: Message, state: FSMContext) -> None:
         await message.delete()
         return
     chat_username = f'@{link_groups[0]}'
-    chat = await message.bot.get_chat(chat_username)
+    try:
+        chat = await message.bot.get_chat(chat_username)
+    except TelegramBadRequest:
+        await message.bot.edit_message_text(
+            chat_id=message.chat.id,
+            message_id=int(bot_message_id),
+            text=render('incorrect_link.jinja2', link=link),
+            reply_markup=cancel_demolition,
+        )
+        await message.delete()
+        return
     if chat.type != ChatType.SUPERGROUP:
         await message.bot.edit_message_text(
             chat_id=message.chat.id,

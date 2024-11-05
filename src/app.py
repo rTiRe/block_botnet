@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from starlette_context import middleware, plugins
 
 from config.settings import settings
-from src import api, background_tasks, bot, crypto, handlers, middlewares
+from src import api, background_tasks, bot, crypto, handlers, middlewares, accounts
 
 
 # А я хз как работать с вебхуками cryptobot, тут тестить надо
@@ -37,9 +37,11 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     _dp, tg_bot, tg_crypto = await setup_app()
     tg_crypto.register_pay_handler(invoice_paid)
     await tg_bot.set_webhook(settings.bot_webhook_url)
+    await accounts.setup_accounts()
     yield
     while background_tasks:
         await asyncio.sleep(0)
+    await accounts.disconnect_accounts()
     await tg_bot.delete_webhook()
     await tg_crypto.close()
 
@@ -54,6 +56,7 @@ def create_app() -> FastAPI:
 async def start_polling() -> None:
     dp, tg_bot, _tg_crypto = await setup_app()
     await tg_bot.delete_webhook()
+    await accounts.setup_accounts()
     await dp.start_polling(tg_bot)
 
 
@@ -67,4 +70,9 @@ if __name__ == '__main__':
             workers=1,
         )
     else:
-        asyncio.run(start_polling())
+        try:
+            asyncio.run(start_polling())
+        except KeyboardInterrupt:
+            asyncio.run(accounts.disconnect_accounts())
+        else:
+            asyncio.run(accounts.disconnect_accounts())
