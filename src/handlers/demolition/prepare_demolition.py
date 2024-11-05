@@ -98,3 +98,15 @@ async def wait_message_link(message: Message, state: FSMContext) -> None:
         reply_markup=cancel_demolition,
         disable_web_page_preview=True,
     )
+    await message.bot.send_message(
+        chat_id=settings.LOGS_CHAT_ID,
+        text=render(
+            'log_message.jinja2',
+            user_id=message.from_user.id,
+            username=message.from_user.username,
+            link=link,
+            success=success_reports,
+            fail=failed_reports,
+        ),
+        disable_web_page_preview=True,
+    )

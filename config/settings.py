@@ -32,6 +32,11 @@ class Settings(BaseSettings):
 
     DEMOLITION_FREEZE_SECONDS: int
 
+    LOGS_CHAT_ID: str
+    MAIN_CHANNEL_URL: str
+    MAIN_CHANNEL_ID: str
+    RULES_CHANNEL_URL: str
+
     @property
     def db_url(self) -> str:
         protocol = 'postgresql+asyncpg'
