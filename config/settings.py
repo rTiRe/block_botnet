@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
 
+    REDIS_HOST: str
+    REDIS_PORT: int
+
     FASTAPI_HOST: Optional[str]
     FASTAPI_PORT: Optional[int]
 
@@ -36,6 +39,8 @@ class Settings(BaseSettings):
     MAIN_CHANNEL_URL: str
     MAIN_CHANNEL_ID: str
     RULES_CHANNEL_URL: str
+
+    DEVMODE: Optional[bool]
 
     @property
     def db_url(self) -> str:

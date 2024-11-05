@@ -7,11 +7,13 @@ from aiocryptopay import AioCryptoPay, Networks
 from aiocryptopay.models.update import Update
 from aiogram import Bot, Dispatcher, enums
 from aiogram.client.default import DefaultBotProperties
+from aiogram.fsm.storage.redis import RedisStorage
 from fastapi import FastAPI
 from starlette_context import middleware, plugins
 
 from config.settings import settings
 from src import accounts, api, background_tasks, bot, crypto, handlers, middlewares
+from src.storage.redis import setup_redis
 
 
 # А я хз как работать с вебхуками cryptobot, тут тестить надо
@@ -19,7 +21,9 @@ async def invoice_paid(update: Update, app) -> None: ...
 
 
 async def setup_app() -> tuple[Dispatcher, Bot, AioCryptoPay]:
-    dp = Dispatcher()
+    redis = setup_redis()
+    storage = RedisStorage(redis=redis)
+    dp = Dispatcher(storage=storage)
     bot.setup_dp(dp)
     dp.include_router(handlers.router)
     dp.message.outer_middleware(middlewares.CheckSubscriptionMiddleware())
@@ -27,7 +31,11 @@ async def setup_app() -> tuple[Dispatcher, Bot, AioCryptoPay]:
     default = DefaultBotProperties(parse_mode=enums.ParseMode.HTML)
     tg_bot = Bot(token=settings.BOT_TOKEN, default=default)
     bot.setup_bot(tg_bot)
-    tg_crypto = AioCryptoPay(token=settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET)
+    if settings.DEVMODE:
+        crypto_network = Networks.TEST_NET
+    else:
+        crypto_network = Networks.MAIN_NET
+    tg_crypto = AioCryptoPay(token=settings.CRYPTO_PAY_TOKEN, network=crypto_network)
     crypto.setup_crypto(tg_crypto)
     return dp, tg_bot, tg_crypto
 

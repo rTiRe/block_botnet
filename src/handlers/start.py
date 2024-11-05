@@ -1,7 +1,6 @@
 from aiogram import F
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import default_state
 from aiogram.types import CallbackQuery, Message
 
 from src.handlers.main_menu import menu_message
@@ -14,7 +13,7 @@ from src.utils.user_utils import add_user
 
 @router.message(CommandStart())
 async def start(message: Message, state: FSMContext) -> None:
-    await state.set_state(default_state)
+    await state.clear()
     await message.answer(
         text=render('start.jinja2'),
         reply_markup=call_main_menu,
@@ -26,7 +25,7 @@ async def start(message: Message, state: FSMContext) -> None:
 @router.callback_query(F.data == CHECK_SUBSCRIPTION_QUERY)
 async def check_channel(query: CallbackQuery, state: FSMContext) -> None:
     await query.answer()
-    await state.set_state(default_state)
+    await state.clear()
     await query.message.answer(
         text=render('start.jinja2'),
         reply_markup=call_main_menu,
