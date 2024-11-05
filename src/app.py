@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from starlette_context import middleware, plugins
 
 from config.settings import settings
-from src import api, background_tasks, bot, crypto, handlers, middlewares, accounts
+from src import accounts, api, background_tasks, bot, crypto, handlers, middlewares
 
 
 # А я хз как работать с вебхуками cryptobot, тут тестить надо

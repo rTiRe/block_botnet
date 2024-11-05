@@ -1,8 +1,8 @@
 from aiogram import F
 from aiogram.enums import ChatType
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
-from aiogram.exceptions import TelegramBadRequest
 
 from src.handlers.demolition.router import router
 from src.handlers.demolition.run_demolition import demolition
@@ -11,7 +11,13 @@ from src.states.demolition import Demolition
 from src.templates.env import render
 from src.templates.keyboard_buttons.main import START_DEMOLITION_CALLBACK
 from src.utils.check_link import check_public_link
-from src.utils.demolition_utils import is_user_can_start_demolition, update_demolition_timestamp, UserDemolitionFreezed, UserWithoutSubscription, settings
+from src.utils.demolition_utils import (
+    UserDemolitionFreezed,
+    UserWithoutSubscription,
+    is_user_can_start_demolition,
+    settings,
+    update_demolition_timestamp,
+)
 
 
 async def pre_check(message: Message, user_id: int, state: FSMContext) -> bool:

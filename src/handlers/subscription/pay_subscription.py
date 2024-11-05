@@ -1,4 +1,5 @@
 from aiocryptopay.api import Invoice
+from aiocryptopay.exceptions.factory import CodeErrorFactory
 from aiogram import F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
@@ -10,8 +11,6 @@ from src.states.subscription import Subscription
 from src.templates.env import render
 from src.templates.keyboard_buttons.subscription import SUBSCRIPTIONS
 from src.utils.crypto_utils import add_user_invoice_id, get_user_invoice_id
-
-from aiocryptopay.exceptions.factory import CodeErrorFactory
 
 
 async def update_user_invoice(user_id: int, invoice_data: dict) -> Invoice:
