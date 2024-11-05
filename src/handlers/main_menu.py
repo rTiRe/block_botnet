@@ -20,6 +20,7 @@ async def menu_message(message: Message, state: FSMContext) -> None:
         text=render('main.jinja2'),
         reply_markup=main_menu,
     )
+    await state.update_data(bot_message_id=message.message_id)
 
 
 @router.callback_query(Demolition.waiting_link, F.data == CANCEL_DEMOLITION_CALLBACK)

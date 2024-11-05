@@ -20,7 +20,6 @@ async def prepare_demolition(query: CallbackQuery, state: FSMContext) -> None:
         text=render('prepare_demolition.jinja2'),
         reply_markup=cancel_demolition,
     )
-    await state.update_data(bot_message_id=query.message.message_id)
 
 
 @router.message(Demolition.waiting_link)

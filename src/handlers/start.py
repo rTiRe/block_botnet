@@ -26,4 +26,10 @@ async def start(message: Message, state: FSMContext) -> None:
 @router.callback_query(F.data == CHECK_SUBSCRIPTION_QUERY)
 async def check_channel(query: CallbackQuery, state: FSMContext) -> None:
     await query.answer()
-    await start(query.message, state)
+    await state.set_state(default_state)
+    await query.message.answer(
+        text=render('start.jinja2'),
+        reply_markup=call_main_menu,
+    )
+    await add_user(query.from_user.id)
+    await menu_message(query.message, state)

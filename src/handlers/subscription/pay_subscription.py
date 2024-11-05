@@ -11,6 +11,8 @@ from src.templates.env import render
 from src.templates.keyboard_buttons.subscription import SUBSCRIPTIONS
 from src.utils.crypto_utils import add_user_invoice_id, get_user_invoice_id
 
+from aiocryptopay.exceptions.factory import CodeErrorFactory
+
 
 async def update_user_invoice(user_id: int, invoice_data: dict) -> Invoice:
     crypto = get_crypto()
@@ -18,7 +20,10 @@ async def update_user_invoice(user_id: int, invoice_data: dict) -> Invoice:
     old_invoice = await get_user_invoice_id(user_id)
     if invoice.invoice_id != old_invoice:
         if old_invoice:
-            await crypto.delete_invoice(invoice.invoice_id)
+            try:
+                await crypto.delete_invoice(old_invoice)
+            except CodeErrorFactory:
+                ...
         await add_user_invoice_id(user_id, invoice.invoice_id)
     return invoice
 
