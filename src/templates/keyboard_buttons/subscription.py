@@ -15,29 +15,29 @@ invoice_const_data = {
 SUBSCRIPTIONS = MappingProxyType(
     {
         'one_week': {
-            'name': '1 неделя',
+            'name': 'Неделя',
             'duration': 7,
             'invoice': {
-                'amount': 2,
-                'description': 'Оплата подписки на 1 неделю',
-                **invoice_const_data,
-            },
-        },
-        'two_weeks': {
-            'name': '2 недели',
-            'duration': 14,
-            'invoice': {
-                'amount': 5,
-                'description': 'Оплата подписки на 2 недели',
+                'amount': 7,
+                'description': 'Оплата подписки на неделю',
                 **invoice_const_data,
             },
         },
         'one_month': {
-            'name': '1 месяц',
+            'name': 'Месяц',
             'duration': 30,
             'invoice': {
-                'amount': 10,
-                'description': 'Оплата подписки на 1 месяц',
+                'amount': 15,
+                'description': 'Оплата подписки на месяц',
+                **invoice_const_data,
+            },
+        },
+        'forever': {
+            'name': 'Навсегда',
+            'duration': -1,
+            'invoice': {
+                'amount': 30,
+                'description': 'Оплата бессрочной подписки',
                 **invoice_const_data,
             },
         },

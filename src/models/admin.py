@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import UUID, Integer
+from sqlalchemy import UUID, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.models.meta import Base
@@ -15,4 +15,4 @@ class Admin(Base):
         primary_key=True,
         default=uuid.uuid4,
     )
-    user_id: Mapped[int] = mapped_column(Integer, unique=True, index=True)
+    user_id: Mapped[int] = mapped_column(BigInteger, unique=True, index=True)

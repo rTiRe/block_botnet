@@ -49,7 +49,7 @@ async def check_user_invoice(user_id: int) -> int | bool:
     if invoice_id:
         crypto = get_crypto()
         invoice = await crypto.get_invoices(invoice_ids=invoice_id)
-        if invoice.status == InvoiceStatus.PAID:
+        if invoice and invoice.status == InvoiceStatus.PAID:
             days = int(invoice.payload.split(',')[1].strip())
             if days == -1:
                 subscription_timestamp = -1

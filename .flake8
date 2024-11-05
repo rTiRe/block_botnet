@@ -14,6 +14,7 @@ exclude =
     external_integration,
     backend_utils,
     pypoetry
+    sessions/checker.py
 
 # Ignoring:
 # E203: white space before ':'. Because it's not black compatible
@@ -59,7 +60,8 @@ per-file-ignores =
     src/handlers/subscription/__init__.py,
     src/handlers/__init__.py,
     src/api/__init__.py,
-    src/middlewares/__init__.py:
+    src/middlewares/__init__.py,
+    src/handlers/demolition/__init__.py:
         F401,
         F811,
         WPS300,

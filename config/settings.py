@@ -19,6 +19,17 @@ class Settings(BaseSettings):
     FASTAPI_HOST: Optional[str]
     FASTAPI_PORT: Optional[int]
 
+    API_ID: str
+    API_HASH: str
+
+    SESSIONS_PATH: str
+
+    PROXY_SCHEME: str
+    PROXY_USERNAME: str
+    PROXY_PASSWORD: str
+    PROXY_HOSTNAME: str
+    PROXY_PORT: int
+
     @property
     def db_url(self) -> str:
         protocol = 'postgresql+asyncpg'
@@ -33,6 +44,16 @@ class Settings(BaseSettings):
     @property
     def crypro_webhook_url(self) -> str:
         return f'{self.FASTAPI_HOST}/{self.CRYPTO_WEBHOOK_PATH}'
+
+    @property
+    def proxy(self) -> dict:
+        return {
+            'scheme': self.PROXY_SCHEME,
+            'hostname': self.PROXY_HOSTNAME,
+            'port': self.PROXY_PORT,
+            'username': self.PROXY_USERNAME,
+            'password': self.PROXY_PASSWORD,
+        }
 
     class Config:
         env_file = 'config/.env'

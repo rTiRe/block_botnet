@@ -14,6 +14,7 @@ from config.settings import settings
 from src import api, background_tasks, bot, crypto, handlers, middlewares
 
 
+# А я хз как работать с вебхуками cryptobot, тут тестить надо
 async def invoice_paid(update: Update, app) -> None: ...
 
 
@@ -61,7 +62,7 @@ if __name__ == '__main__':
         uvicorn.run(
             'src.app:create_app',
             factory=True,
-            host=settings.FASTAPI_HOST,
+            host='0.0.0.0',
             port=settings.FASTAPI_PORT,
             workers=1,
         )
