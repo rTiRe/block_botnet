@@ -18,3 +18,4 @@ class User(Base):
     user_id: Mapped[int] = mapped_column(BigInteger, unique=True, index=True)
     subscription: Mapped[int] = mapped_column(BigInteger, nullable=True, default=None)
     waiting_invoice: Mapped[int] = mapped_column(BigInteger, nullable=True, default=None)
+    demolition_timestamp: Mapped[int] = mapped_column(BigInteger, nullable=True, default=None)

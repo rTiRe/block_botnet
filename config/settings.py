@@ -30,6 +30,8 @@ class Settings(BaseSettings):
     PROXY_HOSTNAME: str
     PROXY_PORT: int
 
+    DEMOLITION_FREEZE_SECONDS: int
+
     @property
     def db_url(self) -> str:
         protocol = 'postgresql+asyncpg'

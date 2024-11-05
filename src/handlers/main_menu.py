@@ -16,11 +16,11 @@ from src.templates.keyboard_buttons.return_back import RETURN_BACK_CALLBACK
 @router.message(F.text == CALL_MAIN_MENU)
 async def menu_message(message: Message, state: FSMContext) -> None:
     await state.set_state(default_state)
-    await message.answer(
+    menu = await message.answer(
         text=render('main.jinja2'),
         reply_markup=main_menu,
     )
-    await state.update_data(bot_message_id=message.message_id)
+    await state.update_data(bot_message_id=menu.message_id)
 
 
 @router.callback_query(Demolition.waiting_link, F.data == CANCEL_DEMOLITION_CALLBACK)
