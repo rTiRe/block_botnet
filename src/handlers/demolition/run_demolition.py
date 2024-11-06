@@ -7,21 +7,8 @@ from pyrogram.raw.types import InputReportReasonSpam
 
 from src.accounts import get_accounts
 
-REPORT_TEXTS = (
-    'Сообщение содержит спам',
-    'Это сообщение нарушает правила сообщества',
-    'Содержанимое сообщения является неприемлемым',
-    'Спам',
-    'Спам. Примите меры',
-    'Спам. Пожалуйста, примите меры',
-    'Этот контент нарушает политику сервиса',
-    'Этот контент нарушает политику Телаграмм',
-    'Этот контент нарушает политику Telegram',
-    'Сообщение кажется подозрительным',
-    'Прошу удалить это сообщение',
-    'Нарушение правил сообщества. Рассмотрите',
-    'Нарушение правил',
-)
+with open('report_texts.txt') as file:
+    REPORT_TEXTS = tuple([line.strip() for line in file.readlines()])
 
 
 async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
