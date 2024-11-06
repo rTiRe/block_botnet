@@ -14,7 +14,7 @@ async def make_admin(user_id: int) -> None:
         database=settings.POSTGRES_DB,
         user=settings.POSTGRES_USER,
         password=settings.POSTGRES_PASSWORD,
-        host=settings.POSTGRES_HOST,
+        host='0.0.0.0',
         port=settings.POSTGRES_PORT,
     )
     try:
