@@ -14,6 +14,7 @@ async def add_subscription(message: Message, command: CommandObject) -> None:
     await message.delete()
     if not await check_admin(message.from_user.id):
         await message.answer('У вас недостаточно прав, обратитесь к администратору!')
+        return
     if len(command.args) < 2:
         await message.answer('Неправильный формат команды. Используйте: /add [target_user_id] [days]')
         return

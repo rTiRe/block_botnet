@@ -12,6 +12,7 @@ async def remove_subscription(message: Message, command: CommandObject) -> None:
     await message.delete()
     if not await check_admin(message.from_user.id):
         await message.answer('У вас недостаточно прав, обратитесь к администратору!')
+        return
     if command.args and int(command.args.split(' ')[0]):
         target_user_id = int(command.args.split(' ')[0])
         try:
