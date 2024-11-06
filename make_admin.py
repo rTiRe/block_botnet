@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from config.settings import settings
 
-user_id = int(sys.stdin.readline())
+user_id = int(sys.argv[0])
 
 
 async def make_admin(user_id: int) -> None:
