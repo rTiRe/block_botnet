@@ -12,7 +12,10 @@ with open('report_texts.txt') as file:
 
 
 async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
-    chat = await app.resolve_peer(peer_id=chat_id)
+    try:
+        chat = await app.resolve_peer(peer_id=chat_id)
+    except Exception as exception:
+        return False
     report_message = random.choice(REPORT_TEXTS)
     await asyncio.sleep(random.randint(0, 15))
     try:
