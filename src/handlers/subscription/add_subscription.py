@@ -26,8 +26,11 @@ async def add_subscription(message: Message, command: CommandObject) -> None:
             'ID и количество дней должны быть числами. Используйте: /add [target_user_id] [days]',
         )
         return
-    days_milliseconds = days * 24 * 60 * 60 * 1000
-    subscription_timestamp = int(time.time() * 1000) + days_milliseconds
+    if days == -1:
+        subscription_timestamp = -1
+    else:
+        days_milliseconds = days * 24 * 60 * 60 * 1000
+        subscription_timestamp = int(time.time() * 1000) + days_milliseconds
     try:
         await add_sub(target_user_id, subscription_timestamp)
     except Exception:  # noqa: PIE786 - Because the user should not know the reason for the error.
