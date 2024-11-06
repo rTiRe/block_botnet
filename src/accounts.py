@@ -5,7 +5,7 @@ from pyrogram import Client, errors
 
 from config.settings import settings
 
-accounts: list[Client]
+accounts: list[Client] = {}
 
 
 async def _setup_account(session_name: str) -> None | Client:
@@ -38,18 +38,20 @@ async def _setup_account(session_name: str) -> None | Client:
     ):
         await app.disconnect()
         return
-    return app
+    return session_name, app
 
 async def setup_accounts() -> None:
     global accounts
-    accounts = []
     files = listdir(settings.SESSIONS_PATH)
-    sessions = [file_name[:-8] for file_name in files if file_name.endswith('.session')]
+    sessions = [file_name[:-8] for file_name in files if file_name.endswith('.session') if file_name[:-8] not in accounts.keys()]
     pre_setup_accounts = await asyncio.gather(*[_setup_account(session) for session in sessions])
-    accounts = list(filter(lambda account: account is not None, pre_setup_accounts))
+    pre_setup_accounts = list(filter(lambda x: x is not None, pre_setup_accounts))
+    for session_name, account in pre_setup_accounts:
+        if account is not None:
+            accounts[session_name] = account
 
 
-def get_accounts() -> list[Client]:
+def get_accounts() -> dict[str, Client]:
     global accounts
     return accounts
 
