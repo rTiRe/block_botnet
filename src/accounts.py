@@ -19,10 +19,10 @@ async def _setup_account(session_name: str) -> None | Client:
         async with asyncio.timeout(5):
             is_authorized = await app.connect()
     except asyncio.TimeoutError:
-        print(f'{session_name} - timed out')
+        print(f'{session_name} - timed out', flush=True)
         return
     if not is_authorized:
-        print(f'{session_name} - not authorized')
+        print(f'{session_name} - not authorized', flush=True)
         return
     try:
         await app.get_me()
@@ -38,10 +38,10 @@ async def _setup_account(session_name: str) -> None | Client:
         errors.UserDeactivated,
         errors.UserDeactivatedBan,
     ) as exception:
-        print(f'{session_name} - {exception}')
+        print(f'{session_name} - {exception}', flush=True)
         await app.disconnect()
         return
-    print(f'{session_name} - success')
+    print(f'{session_name} - success', flush=True)
     return session_name, app
 
 async def setup_accounts() -> None:
