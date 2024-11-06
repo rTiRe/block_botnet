@@ -15,6 +15,7 @@ async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
     try:
         chat = await app.resolve_peer(peer_id=chat_id)
     except Exception as exception:
+        print(f'1: {exception}', flush=True)
         return False
     report_message = random.choice(REPORT_TEXTS)
     await asyncio.sleep(random.randint(0, 15))
@@ -28,6 +29,7 @@ async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
             ),
         )
     except Exception:  # noqa: PIE786 - Because we catch all Exceptions
+        print(f'2: {exception}', flush=True)
         return False
     return True
 
