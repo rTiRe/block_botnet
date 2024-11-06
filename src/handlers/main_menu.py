@@ -28,6 +28,7 @@ async def menu_message(message: Message, state: FSMContext) -> None:
 @router.callback_query(Profile.showing_profile, F.data == RETURN_BACK_CALLBACK)
 async def menu_callback(query: CallbackQuery, state: FSMContext) -> None:
     await state.clear()
+    await add_user(query.from_user.id)
     await query.message.edit_text(
         text=render('main.jinja2'),
         reply_markup=main_menu,
