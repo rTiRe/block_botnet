@@ -19,8 +19,10 @@ async def _setup_account(session_name: str) -> None | Client:
         async with asyncio.timeout(5):
             is_authorized = await app.connect()
     except asyncio.TimeoutError:
+        print(f'{session_name} - timed out')
         return
     if not is_authorized:
+        print(f'{session_name} - not authorized')
         return
     try:
         await app.get_me()
@@ -35,9 +37,11 @@ async def _setup_account(session_name: str) -> None | Client:
         errors.SessionRevoked,
         errors.UserDeactivated,
         errors.UserDeactivatedBan,
-    ):
+    ) as exception:
+        print(f'{session_name} - {exception}')
         await app.disconnect()
         return
+    print(f'{session_name} - success')
     return session_name, app
 
 async def setup_accounts() -> None:
@@ -49,6 +53,7 @@ async def setup_accounts() -> None:
     for session_name, account in pre_setup_accounts:
         if account is not None:
             accounts[session_name] = account
+    print()
     for acc in accounts.keys():
         print(acc, flush=True)
 
