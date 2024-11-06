@@ -49,6 +49,8 @@ async def setup_accounts() -> None:
     for session_name, account in pre_setup_accounts:
         if account is not None:
             accounts[session_name] = account
+    for acc in accounts.keys():
+        print(acc, flush=True)
 
 
 def get_accounts() -> dict[str, Client]:
