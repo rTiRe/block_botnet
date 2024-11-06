@@ -40,7 +40,7 @@ async def checker() -> tuple[int, int]:
     sessions = [file_name[:-8] for file_name in files if file_name.endswith('.session')]
     await asyncio.gather(*[check_client(session) for session in sessions])
     print()
-    print(f'{len(success_logged)} working sessions.')
+    print(f'{len(success_logged)}/{len(sessions)} working sessions.')
     for session in success_logged:
         print(session)
 
