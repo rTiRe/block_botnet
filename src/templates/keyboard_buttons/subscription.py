@@ -10,6 +10,7 @@ invoice_const_data = {
     'asset': str(asset),
     'hidden_message': 'Спасибо за оплату!',
     'paid_btn_name': 'openBot',
+    'paid_btn_url': 'https://t.me/bot',
 }
 
 SUBSCRIPTIONS = MappingProxyType(

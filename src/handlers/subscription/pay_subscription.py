@@ -31,8 +31,6 @@ async def update_user_invoice(user_id: int, invoice_data: dict) -> Invoice:
 async def pay_subscription(query: CallbackQuery, state: FSMContext) -> None:
     await query.answer()
     invoice_data: dict = SUBSCRIPTIONS[query.data]['invoice'].copy()
-    bot_username = (await query.bot.get_me()).username
-    invoice_data['paid_btn_url'] = f'https://t.me/{bot_username}'
     user_id = query.from_user.id
     subscription_duration = SUBSCRIPTIONS[query.data]['duration']
     invoice_data['payload'] = f'{user_id},{subscription_duration}'

@@ -34,7 +34,7 @@ services:
     volumes:
       - ./:/code
     ports:
-      - "80:80"
+      - ${FASTAPI_PORT}:${FASTAPI_PORT}
     command: poetry run python -m src.app
     restart: unless-stopped
     depends_on:

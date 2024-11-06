@@ -38,6 +38,8 @@ async def update_demolition_timestamp(
     timestamp: int | None = None,
     session: AsyncSession = Provide(get_db),
 ) -> int:
+    if not settings.DEMOLITION_FREEZE_SECONDS:
+        return
     if not timestamp:
         timestamp = int(time.time() + settings.DEMOLITION_FREEZE_SECONDS) * 1000
     statement = (

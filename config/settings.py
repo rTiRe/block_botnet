@@ -27,18 +27,19 @@ class Settings(BaseSettings):
 
     SESSIONS_PATH: str
 
-    PROXY_SCHEME: str
+    PROXY_SCHEME: Optional[str]
     PROXY_USERNAME: str
     PROXY_PASSWORD: str
     PROXY_HOSTNAME: str
     PROXY_PORT: int
 
-    DEMOLITION_FREEZE_SECONDS: int
+    _DEMOLITION_FREEZE_SECONDS: Optional[int]
 
     LOGS_CHAT_ID: str
     MAIN_CHANNEL_URL: str
     MAIN_CHANNEL_ID: str
     RULES_CHANNEL_URL: str
+    SUPPORT_URL: str
 
     DEVMODE: Optional[bool]
 
@@ -59,6 +60,8 @@ class Settings(BaseSettings):
 
     @property
     def proxy(self) -> dict:
+        if not self.PROXY_SCHEME:
+            return
         return {
             'scheme': self.PROXY_SCHEME,
             'hostname': self.PROXY_HOSTNAME,
@@ -66,6 +69,12 @@ class Settings(BaseSettings):
             'username': self.PROXY_USERNAME,
             'password': self.PROXY_PASSWORD,
         }
+
+    @property
+    def DEMOLITION_FREEZE_SECONDS(self) -> int:
+        if not self._DEMOLITION_FREEZE_SECONDS:
+            return 0
+        return self._DEMOLITION_FREEZE_SECONDS
 
     class Config:
         env_file = 'config/.env'

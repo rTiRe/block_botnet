@@ -119,8 +119,7 @@ async def wait_message_link(message: Message, state: FSMContext) -> None:
         chat_id=settings.LOGS_CHAT_ID,
         text=render(
             'log_message.jinja2',
-            user_id=message.from_user.id,
-            username=message.from_user.username,
+            user=message.from_user,
             link=link,
             success=success_reports,
             fail=failed_reports,
