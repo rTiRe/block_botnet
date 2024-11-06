@@ -48,14 +48,17 @@ async def setup_accounts() -> None:
     global accounts
     files = listdir(settings.SESSIONS_PATH)
     sessions = [file_name[:-8] for file_name in files if file_name.endswith('.session') if file_name[:-8] not in accounts.keys()]
+    print(f'Tries to setup accounts:', flush=True)
     pre_setup_accounts = await asyncio.gather(*[_setup_account(session) for session in sessions])
     pre_setup_accounts = list(filter(lambda x: x is not None, pre_setup_accounts))
     for session_name, account in pre_setup_accounts:
         if account is not None:
             accounts[session_name] = account
-    print()
+    print('', flush=True)
+    print(f'Successfully setup {len(pre_setup_accounts)} accounts:', flush=True)
     for acc in accounts.keys():
         print(acc, flush=True)
+    print('', flush=True)
 
 
 def get_accounts() -> dict[str, Client]:
