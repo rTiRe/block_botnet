@@ -16,7 +16,7 @@ async def _setup_account(session_name: str) -> None | Client:
         proxy=settings.proxy,
     )
     try:
-        async with asyncio.timeout(5):
+        async with asyncio.timeout(15):
             is_authorized = await app.connect()
     except asyncio.TimeoutError:
         print(f'{session_name} - timed out', flush=True)
