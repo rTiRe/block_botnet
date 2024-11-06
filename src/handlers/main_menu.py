@@ -33,3 +33,4 @@ async def menu_callback(query: CallbackQuery, state: FSMContext) -> None:
         text=render('main.jinja2'),
         reply_markup=main_menu,
     )
+    await state.update_data(bot_message_id=query.message.message_id)

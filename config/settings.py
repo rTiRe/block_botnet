@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     PROXY_HOSTNAME: str
     PROXY_PORT: int
 
-    _DEMOLITION_FREEZE_SECONDS: Optional[int]
+    DEMOLITION_FREEZE_SECONDS: Optional[int]
 
     LOGS_CHAT_ID: str
     MAIN_CHANNEL_URL: str
@@ -69,12 +69,6 @@ class Settings(BaseSettings):
             'username': self.PROXY_USERNAME,
             'password': self.PROXY_PASSWORD,
         }
-
-    @property
-    def DEMOLITION_FREEZE_SECONDS(self) -> int:
-        if not self._DEMOLITION_FREEZE_SECONDS:
-            return 0
-        return self._DEMOLITION_FREEZE_SECONDS
 
     class Config:
         env_file = 'config/.env'
