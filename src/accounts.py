@@ -5,7 +5,7 @@ from pyrogram import Client, errors
 
 from config.settings import settings
 
-accounts: list[Client] = {}
+accounts: dict[str, Client] = {}
 
 
 async def _setup_account(session_name: str) -> None | Client:
@@ -57,5 +57,5 @@ def get_accounts() -> dict[str, Client]:
 
 
 async def disconnect_accounts() -> None:
-    for account in accounts:
+    for account in accounts.values():
         await account.disconnect()
