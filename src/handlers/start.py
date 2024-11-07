@@ -32,3 +32,4 @@ async def check_channel(query: CallbackQuery, state: FSMContext) -> None:
     )
     await add_user(query.from_user.id)
     await menu_message(query.message, state)
+    await query.message.delete()
