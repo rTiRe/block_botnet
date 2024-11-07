@@ -20,10 +20,13 @@ async def _setup_account(session_name: str) -> None | Client:
             is_authorized = await app.connect()
     except asyncio.TimeoutError:
         print(f'{session_name} - timed out', flush=True)
-        return
+        return False
+    except Exception as exception:
+        print(f'{session_name} - {exception}', flush=True)
+        return False
     if not is_authorized:
         print(f'{session_name} - not authorized', flush=True)
-        return
+        return False
     try:
         await app.get_me()
     except (
@@ -37,10 +40,12 @@ async def _setup_account(session_name: str) -> None | Client:
         errors.SessionRevoked,
         errors.UserDeactivated,
         errors.UserDeactivatedBan,
+        errors.FloodWait,
+        Exception,
     ) as exception:
         print(f'{session_name} - {exception}', flush=True)
         await app.disconnect()
-        return
+        return False
     print(f'{session_name} - success', flush=True)
     return session_name, app
 
@@ -49,9 +54,11 @@ async def setup_accounts() -> None:
     files = listdir(settings.SESSIONS_PATH)
     sessions = [file_name[:-8] for file_name in files if file_name.endswith('.session') if file_name[:-8] not in accounts.keys()]
     print(f'Tries to setup accounts:', flush=True)
-    pre_setup_accounts = await asyncio.gather(*[_setup_account(session) for session in sessions])
-    pre_setup_accounts = list(filter(lambda x: x is not None, pre_setup_accounts))
-    for session_name, account in pre_setup_accounts:
+    async with asyncio.TaskGroup() as taskgroup:
+        pre_setup_accounts = [taskgroup.create_task(_setup_account(session)) for session in sessions]
+    pre_setup_accounts = list(filter(lambda x: x.result(), pre_setup_accounts))
+    for task in pre_setup_accounts:
+        session_name, account = task.result()
         if account is not None:
             accounts[session_name] = account
     print('', flush=True)

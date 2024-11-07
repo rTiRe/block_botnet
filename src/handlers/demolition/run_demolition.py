@@ -46,7 +46,9 @@ async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
 
 
 async def demolition(chat_id: int, message_id: int) -> tuple[int, int]:
-    reports_result = await asyncio.gather(
-        *[report(account, chat_id, message_id) for account in get_accounts().values()],
-    )
+    async with asyncio.TaskGroup() as taskgroup:
+        reports_tasks = [
+            taskgroup.create_task(report(account, chat_id, message_id)) for account in get_accounts().values()
+        ]
+    reports_result = [task.result() for task in reports_tasks]
     return reports_result.count(True), reports_result.count(False)
