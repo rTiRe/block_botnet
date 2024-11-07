@@ -17,6 +17,8 @@ async def check_client(session: str) -> None:
     except asyncio.TimeoutError:
         print(f'{session} - timed out')
         return
+    except Exception as exception:
+        print(f'{session} failed: {exception}', flush=True)
     if not is_authorized:
         print(f'{session} failed: not authorized.')
     try:
@@ -32,6 +34,8 @@ async def check_client(session: str) -> None:
         errors.SessionRevoked,
         errors.UserDeactivated,
         errors.UserDeactivatedBan,
+        errors.FloodWait,
+        Exception,
     ) as exception:
         print(f'{session} failed: {exception}.')
     else:
@@ -43,9 +47,11 @@ async def checker() -> tuple[int, int]:
     files = listdir('sessions')
     print(f'All sessions: {files}')
     sessions = [file_name[:-8] for file_name in files if file_name.endswith('.session')]
-    await asyncio.gather(*[check_client(session) for session in sessions])
+    async with asyncio.TaskGroup() as taskgroup:
+        for session in sessions:
+            taskgroup.create_task(check_client(session))
     print()
-    print(f'{len(success_logged)}/{len(sessions)} working sessions.')
+    print(f'{len(success_logged)}/{len(sessions)} working_setup_account sessions.')
     for session in success_logged:
         print(session)
 
