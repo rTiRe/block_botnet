@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-from pyrogram import Client, utils
+from pyrogram import Client, utils, errors
 from pyrogram.raw.functions.messages import Report
 from pyrogram.raw.types import InputReportReasonSpam
 
@@ -40,6 +40,9 @@ async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
                 message=report_message,
             ),
         )
+    except errors.RPCError as exception:
+        print(exception)
+        return False
     except Exception:  # noqa: PIE786 - Because we catch all Exceptions
         return False
     return True
