@@ -12,7 +12,7 @@ success_logged = []
 async def check_client(session: str) -> None:
     app = Client(session, api_id=API_ID, api_hash=API_HASH)
     try:
-        async with asyncio.timeout(20):
+        async with asyncio.timeout(60):
             is_authorized = await app.connect()
     except asyncio.TimeoutError:
         print(f'{session} - timed out')
