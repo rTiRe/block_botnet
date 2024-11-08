@@ -1,27 +1,15 @@
 import asyncio
 import random
 
-from pyrogram import Client, utils, errors
+from pyrogram import Client, errors
 from pyrogram.raw.functions.messages import Report
 from pyrogram.raw.types import InputReportReasonSpam
 
 from src.accounts import get_accounts
 
+
 with open('report_texts.txt') as file:
     REPORT_TEXTS = tuple([line.strip() for line in file.readlines()])
-
-
-def get_peer_type_new(peer_id: int) -> str:
-    peer_id_str = str(peer_id)
-    if not peer_id_str.startswith('-'):
-        return 'user'
-    elif peer_id_str.startswith('-100'):
-        return 'channel'
-    else:
-        return 'chat'
-
-
-utils.get_peer_type = get_peer_type_new
 
 
 async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
@@ -40,8 +28,7 @@ async def report(app: Client, chat_id: str | int, message_id: int) -> bool:
                 message=report_message,
             ),
         )
-    except errors.RPCError as exception:
-        print(exception)
+    except errors.RPCError:
         return False
     except Exception:  # noqa: PIE786 - Because we catch all Exceptions
         return False
